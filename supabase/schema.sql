@@ -84,7 +84,21 @@ insert into public.match_info (group_name, date, time, location)
 values ('', current_date + 7, '15:00', 'Quadra a definir')
 on conflict do nothing;
 
--- 5) MIGRAÇÃO (rode 1x se seu banco já existe com "Nome do grupo"):
+-- 5) Realtime (lista atualiza sozinha em todos os aparelhos).
+-- Pode rodar quantas vezes quiser (só adiciona se ainda não estiver).
+do $$
+begin
+  if not exists (select 1 from pg_publication_tables
+                 where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'confirmations') then
+    alter publication supabase_realtime add table public.confirmations;
+  end if;
+  if not exists (select 1 from pg_publication_tables
+                 where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'match_info') then
+    alter publication supabase_realtime add table public.match_info;
+  end if;
+end $$;
+
+-- 6) MIGRAÇÃO (rode 1x se seu banco já existe com "Nome do grupo"):
 -- Limpa o valor padrão antigo "Futebol da Galera" para observações vazias.
 -- update public.match_info set group_name = ''
 -- where trim(group_name) = 'Futebol da Galera';

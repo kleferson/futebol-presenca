@@ -473,7 +473,12 @@ async function confirmPresence(name) {
     if (error) {
       if (error.code === "23505") showMsg(formMsg, `"${name}" já confirmou neste jogo!`, "err");
       else showMsg(formMsg, "Erro: " + error.message, "err");
-    } else showMsg(formMsg, `${name} confirmado!`, "ok");
+    } else {
+      // Recarrega na hora (não depende só do realtime)
+      await loadCounts();
+      await loadConfirmations();
+      showMsg(formMsg, `${name} confirmado!`, "ok");
+    }
   } else {
     const d = getDemoData();
     if (d.confirmations.some((c) => c.match_id === currentMatch.id && c.name.toLowerCase() === name.toLowerCase())) {
@@ -495,6 +500,11 @@ async function removeConfirmation(id, name) {
   if (hasSupabase) {
     const { error } = await supabase.from("confirmations").delete().eq("id", id);
     if (error) alert("Erro: " + error.message);
+    else {
+      // Recarrega na hora (não depende só do realtime)
+      await loadCounts();
+      await loadConfirmations();
+    }
   } else {
     const d = getDemoData();
     d.confirmations = d.confirmations.filter((c) => c.id !== id);
