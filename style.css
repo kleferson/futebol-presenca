@@ -428,7 +428,7 @@ input::placeholder { color: #66718a; }
 .admin-user .avatar.small { width: 28px; height: 28px; font-size: 0.85rem; }
 .admin-user .btn { margin-left: auto; }
 .admin-tabs {
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
   background: var(--field); border: 1px solid var(--border);
   border-radius: 12px; padding: 6px; margin-bottom: 12px;
 }
@@ -436,6 +436,7 @@ input::placeholder { color: #66718a; }
   border: 0; border-radius: 8px; padding: 10px 6px;
   background: transparent; color: var(--muted);
   font-weight: 700; font-size: 0.9rem; cursor: pointer;
+  text-align: center;
 }
 .tab.active { background: var(--primary); color: var(--on-primary); }
 .admin-pane h3 { margin-top: 4px; }
