@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060a13" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>Futebol da Galera — Confirmação de Presença</title>
+  <link rel="stylesheet" href="uicons.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <main id="main" class="container">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-badge" aria-hidden="true"><svg class="pitch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="12" y1="5" x2="12" y2="19"/><circle cx="12" cy="12" r="2.5"/><line x1="12" y1="12" x2="12.01" y2="12"/></svg></span>
+        <div>
+          <h1 id="groupName" tabindex="-1">Futebol da Galera</h1>
+          <p class="subtitle">Escolha um jogo para confirmar presença</p>
+        </div>
+      </div>
+    </header>
+
+    <section id="configWarning" class="warning hidden">
+      ⚠️ Configure o Supabase em <code>config.js</code> para ativar o modo online compartilhado.
+      Rodando em <strong>modo demonstração local</strong> por enquanto.
+    </section>
+
+    <!-- HOME: próximos + histórico -->
+    <div id="homeView">
+      <section class="card" aria-labelledby="homeTitle">
+        <h2 id="homeTitle">Jogos</h2>
+        <p class="muted small">Toque em <strong>Entrar</strong> para abrir a página do jogo e confirmar presença. Cada jogo tem sua lista independente.</p>
+        <div class="seg admin-tabs" role="tablist" aria-label="Filtrar jogos por data">
+          <button id="tabUpcoming" class="tab active" type="button" role="tab" aria-selected="true">Próximos</button>
+          <button id="tabHistory" class="tab" type="button" role="tab" aria-selected="false">Histórico</button>
+        </div>
+        <div id="paneUpcoming" role="tabpanel" aria-labelledby="tabUpcoming">
+          <p id="homeSummary" class="muted small" aria-live="polite"></p>
+          <ul id="matchList" class="match-list" aria-label="Próximos jogos"></ul>
+          <p id="matchEmptyMsg" class="empty hidden">Nenhum jogo agendado. Peça ao admin para criar um.</p>
+        </div>
+        <div id="paneHistory" class="hidden" role="tabpanel" aria-labelledby="tabHistory">
+          <p id="historySummary" class="muted small" aria-live="polite"></p>
+          <ul id="historyList" class="match-list" aria-label="Jogos que já passaram"></ul>
+          <p id="historyEmptyMsg" class="empty hidden">Nenhum jogo encerrado ainda.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- PÁGINA DO JOGO: detalhes + presenças -->
+    <div id="gameView" class="hidden">
+      <section class="card match-card hero" aria-labelledby="matchDate">
+        <div class="match-row hero-row">
+          <div class="hero-info">
+            <span class="label">Próximo jogo</span>
+            <p class="match-line"><i class="fi fi-rr-calendar-day" aria-hidden="true"></i><span class="match-main" id="matchDate" tabindex="-1">—</span></p>
+            <p class="match-line match-sub"><i class="fi fi-rr-map-marker" aria-hidden="true"></i><span id="matchLoc">—</span></p>
+          </div>
+          <div class="counter hero-count" role="status" aria-label="Confirmados neste jogo">
+            <span id="count" aria-live="polite">0</span>
+            <small><i class="fi fi-rr-users" aria-hidden="true"></i> confirmados</small>
+          </div>
+        </div>
+        <div id="notesBox" class="notes-box hidden" role="note" aria-label="Observações do jogo">
+          <i class="fi fi-rr-pen-field" aria-hidden="true"></i>
+          <div>
+            <span class="label">Observações</span>
+            <p id="matchNotes"></p>
+          </div>
+        </div>
+        <p id="matchMsg2" class="msg" aria-live="polite"></p>
+      </section>
+
+      <section class="card confirm-card" aria-labelledby="confirmTitle">
+        <h2 id="confirmTitle">Vai jogar? Confirme aqui</h2>
+        <p class="muted small confirm-hint">Digite seu nome e toque em Confirmar. Leva 5 segundos.</p>
+        <form id="confirmForm" class="form-row confirm-row">
+          <label class="sr-only" for="nameInput">Seu nome</label>
+          <input id="nameInput" type="text" maxlength="40" minlength="2"
+            placeholder="Seu nome (ex: Carlos)" autocomplete="name" enterkeyhint="go"
+            aria-describedby="formMsg" required />
+          <button class="btn primary" type="submit"><i class="fi fi-rr-check" aria-hidden="true"></i> Confirmar</button>
+        </form>
+        <p id="formMsg" class="msg" aria-live="polite"></p>
+      </section>
+
+      <section class="card" aria-labelledby="listTitle">
+        <h2 id="listTitle">Quem já confirmou</h2>
+        <p id="adminHint" class="muted small hidden">Modo admin: use <strong>Remover</strong> ao lado do nome para excluir alguém da lista.</p>
+        <ul id="list" class="list"></ul>
+        <p id="emptyMsg" class="empty"><i class="fi fi-rr-trophy" aria-hidden="true"></i> Ninguém confirmou ainda. Seja o primeiro!</p>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <small>Feito para o futebol da galera • Atualiza em tempo real</small>
+      <small class="attribution">Ícones: <a href="https://www.flaticon.com/uicons" target="_blank" rel="noopener">UIcons by Flaticon</a></small>
+    </footer>
+  </main>
+
+  <!-- Tab bar inferior estilo iOS -->
+  <nav class="tabbar" aria-label="Navegação principal">
+    <div class="tabbar-inner">
+      <button id="tabJogos" class="tabbar-item" type="button" aria-current="page">
+        <i class="fi fi-rr-home" aria-hidden="true"></i><span>Jogos</span>
+      </button>
+      <button id="tabShare" class="tabbar-item hidden" type="button">
+        <i class="fi fi-rr-share" aria-hidden="true"></i><span>Compartilhar</span>
+      </button>
+      <a class="tabbar-item" href="admin.html">
+        <i class="fi fi-rr-whistle" aria-hidden="true"></i><span>Admin</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Diálogo de confirmação de presença -->
+  <div id="confirmModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+    <div class="modal-box confirm-dialog">
+      <h2 id="confirmModalTitle">Confirmar presença?</h2>
+      <p class="confirm-name" id="confirmModalName">—</p>
+      <p class="muted small" id="confirmModalGame">—</p>
+      <div class="row confirm-dialog-actions">
+        <button id="confirmModalCancel" class="btn ghost" type="button">Cancelar</button>
+        <button id="confirmModalOk" class="btn primary" type="button"><i class="fi fi-rr-check" aria-hidden="true"></i> Sim, confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

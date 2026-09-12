@@ -1,0 +1,43 @@
+/* UIcons Regular Rounded — Flaticon (https://www.flaticon.com/uicons)
+   Subconjunto local: apenas os 12 ícones usados no app.
+   Atribuição no rodapé das páginas. */
+@font-face {
+  font-family: "uicons-regular-rounded";
+  src: url("fonts/uicons-regular-rounded.woff2") format("woff2"),
+       url("fonts/uicons-regular-rounded.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.fi {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.fi::before {
+  font-family: "uicons-regular-rounded" !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fi-rr-football::before { content: "\f4f4"; }
+.fi-rr-flag-checkered::before { content: "\f4d6"; }
+.fi-rr-pen-field::before { content: "\f6fa"; }
+.fi-rr-calendar-day::before { content: "\f26f"; }
+.fi-rr-clock::before { content: "\f359"; }
+.fi-rr-map-marker::before { content: "\f64c"; }
+.fi-rr-share::before { content: "\f7e4"; }
+.fi-rr-arrow-left::before { content: "\f16e"; }
+.fi-rr-check::before { content: "\f2de"; }
+.fi-rr-users::before { content: "\f999"; }
+.fi-rr-home::before { content: "\f59d"; }
+.fi-rr-plus::before { content: "\f745"; }
+.fi-rr-whistle::before { content: "\f9d4"; }
+.fi-rr-trophy::before { content: "\f961"; }

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060a13" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>Admin — Futebol da Galera</title>
+  <link rel="stylesheet" href="uicons.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <main id="main" class="container">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-badge" aria-hidden="true"><i class="fi fi-rr-whistle"></i></span>
+        <div>
+          <h1>Admin</h1>
+          <p class="subtitle">Gerencie os jogos em 2 passos</p>
+        </div>
+      </div>
+      <a class="btn ghost" href="index.html" aria-label="Voltar para os jogos"><i class="fi fi-rr-arrow-left" aria-hidden="true"></i> Jogos</a>
+    </header>
+
+    <!-- Passo 0: login -->
+    <section id="loginCard" class="card">
+      <h2>1. Entre para continuar</h2>
+      <form id="loginForm" class="stack">
+        <label class="field"><span>Email do admin</span>
+          <input id="emailInput" type="email" placeholder="voce@email.com" required />
+        </label>
+        <label class="field"><span>Senha</span>
+          <input id="passInput" type="password" placeholder="••••••" required />
+        </label>
+        <button class="btn primary" type="submit">Entrar</button>
+      </form>
+      <p id="loginMsg" class="msg" aria-live="polite"></p>
+    </section>
+
+    <!-- Logado -->
+    <div id="panel" class="hidden">
+      <p class="muted small">Logado como <strong id="adminEmail"></strong>
+        <button id="logoutBtn" class="btn ghost small" type="button">Sair</button>
+      </p>
+
+      <!-- Passo 1 -->
+      <section class="card">
+        <h2>Passo 1 — Criar novo jogo</h2>
+        <form id="newMatchForm" class="stack">
+          <label class="field"><span>Observações <small class="muted">(opcional)</small></span>
+            <input id="nGroup" type="text" maxlength="140" placeholder="Ex: Levar colete, churrasco depois..." />
+          </label>
+          <div class="grid2">
+            <label class="field"><span>Data</span><input id="nDate" type="date" required /></label>
+            <label class="field"><span>Hora</span><input id="nTime" type="time" value="15:00" required /></label>
+          </div>
+          <label class="field"><span>Local</span>
+            <input id="nLoc" type="text" maxlength="80" placeholder="Ex: Quadra do bairro" required />
+          </label>
+          <button class="btn primary" type="submit"><i class="fi fi-rr-plus" aria-hidden="true"></i> Criar jogo</button>
+        </form>
+        <p id="newMatchMsg" class="msg" aria-live="polite"></p>
+      </section>
+
+      <!-- Passo 2 -->
+      <section class="card">
+        <h2>Passo 2 — Seus jogos</h2>
+        <p class="muted small">Para tirar 1 pessoa da lista, abra o jogo e use “Remover” ao lado do nome.</p>
+        <div class="seg admin-tabs" role="tablist" aria-label="Filtrar jogos por data">
+          <button id="admTabUpcoming" class="tab active" type="button" role="tab" aria-selected="true">Próximos</button>
+          <button id="admTabHistory" class="tab" type="button" role="tab" aria-selected="false">Histórico</button>
+        </div>
+        <div id="admPaneUpcoming" role="tabpanel" aria-labelledby="admTabUpcoming">
+          <ul id="adminMatchList" class="match-list" aria-label="Próximos jogos"></ul>
+          <p id="adminEmpty" class="empty hidden">Nenhum jogo agendado. Crie o primeiro acima. 👆</p>
+        </div>
+        <div id="admPaneHistory" class="hidden" role="tabpanel" aria-labelledby="admTabHistory">
+          <p id="admHistSummary" class="muted small"></p>
+          <ul id="adminHistoryList" class="match-list" aria-label="Jogos que já passaram"></ul>
+          <p id="adminHistoryEmpty" class="empty hidden">Nenhum jogo encerrado ainda.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <small class="attribution">Ícones: <a href="https://www.flaticon.com/uicons" target="_blank" rel="noopener">UIcons by Flaticon</a></small>
+    </footer>
+  </main>
+
+  <!-- Tab bar inferior estilo iOS -->
+  <nav class="tabbar" aria-label="Navegação principal">
+    <div class="tabbar-inner">
+      <a class="tabbar-item" href="index.html">
+        <i class="fi fi-rr-home" aria-hidden="true"></i><span>Jogos</span>
+      </a>
+      <button class="tabbar-item hidden" type="button" tabindex="-1" aria-hidden="true">
+        <i class="fi fi-rr-share" aria-hidden="true"></i><span>Compartilhar</span>
+      </button>
+      <span class="tabbar-item" aria-current="page">
+        <i class="fi fi-rr-whistle" aria-hidden="true"></i><span>Admin</span>
+      </span>
+    </div>
+  </nav>
+
+  <!-- Confirmação antes de criar o jogo -->
+  <div id="newMatchConfirmModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="newMatchConfirmTitle">
+    <div class="modal-box confirm-dialog">
+      <h2 id="newMatchConfirmTitle">Criar este jogo?</h2>
+      <p class="muted small">Confira os dados antes de publicar para a galera.</p>
+      <div class="confirm-summary">
+        <p><i class="fi fi-rr-calendar-day" aria-hidden="true"></i><strong id="cfDate">—</strong></p>
+        <p><i class="fi fi-rr-map-marker" aria-hidden="true"></i><span id="cfLoc">—</span></p>
+        <p><i class="fi fi-rr-pen-field" aria-hidden="true"></i><span><span class="label">Observações</span><span id="cfNotes">—</span></span></p>
+      </div>
+      <div class="row confirm-dialog-actions">
+        <button id="cfCancel" class="btn ghost" type="button">Revisar</button>
+        <button id="cfOk" class="btn primary" type="button"><i class="fi fi-rr-check" aria-hidden="true"></i> Sim, criar jogo</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
