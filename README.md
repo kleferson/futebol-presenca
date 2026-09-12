@@ -3,7 +3,6 @@
 Confirme presença no futebol da galera em 5 segundos — sem app, sem cadastro, direto no navegador do celular.
 
 🌍 **No ar:** https://kleferson.github.io/futebol-presenca/
-🔑 **Admin:** https://kleferson.github.io/futebol-presenca/admin.html
 
 ![Pages](https://img.shields.io/badge/GitHub_Pages-online-brightgreen)
 ![Supabase](https://img.shields.io/badge/Supabase-realtime-3FCF8E)
