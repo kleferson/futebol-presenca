@@ -1,33 +1,99 @@
 # ⚽ Futebol Presença
 
-Página para confirmar presença no futebol. Visitantes confirmam com o nome, admin gerencia tudo.
+Confirme presença no futebol da galera em 5 segundos — sem app, sem cadastro, direto no navegador do celular.
 
-## Regras
-- **Visitante (sem login):** abre `index.html`, vê próximos jogos com confirmados, entra no jogo (`?m=ID`) e confirma presença.
-- **ADMIN:** abre `admin.html` em 2 passos — 1) cria novo jogo, 2) gerencia a lista (Abrir / Editar / Limpar / Excluir). Para tirar 1 pessoa, abra o jogo e use “Remover”.
+🌍 **No ar:** https://kleferson.github.io/futebol-presenca/
+🔑 **Admin:** https://kleferson.github.io/futebol-presenca/admin.html
 
-## Setup (5 min, grátis)
+![Pages](https://img.shields.io/badge/GitHub_Pages-online-brightgreen)
+![Supabase](https://img.shields.io/badge/Supabase-realtime-3FCF8E)
+![Mobile](https://img.shields.io/badge/mobile--first-iOS_%2F_Android-5b9cff)
+
+---
+
+## Como funciona
+
+### 🙋 Visitante (sem login)
+
+1. Abre o link e vê a lista de **próximos jogos**, cada um com data, local, observações e número de confirmados
+2. Toca em **Entrar →** no jogo da semana (o link `?m=ID` pode ser compartilhado no WhatsApp)
+3. Digita o nome, confirma no diálogo — e aparece na lista **em tempo real** ✨
+4. A aba **Histórico** guarda os jogos que já passaram
+
+> Um nome por jogo: o sistema barra confirmação duplicada (inclusive maiúsculas/minúsculas).
+
+### 🛡️ Admin (com login)
+
+1. Entra em `admin.html` com email + senha
+2. **Passo 1 — Criar novo jogo:** data, hora, local e observações (opcional). Um resumo pede confirmação antes de publicar
+3. **Passo 2 — Seus jogos:** por jogo dá para **Abrir** (ver a página), **Editar**, **Limpar lista** (zera presenças) ou **Excluir jogo**
+4. Para tirar **1 pessoa** da lista: abra o jogo logado e use **Remover** ao lado do nome
+
+---
+
+## ✨ Recursos
+
+- ⚡ **Tempo real** — presenças e jogos atualizam sozinhos via Supabase Realtime, sem F5
+- 📝 **Observações por jogo** — "levar colete", "churrasco depois"... (opcional, pode ficar vazio)
+- 📱 **Mobile-first** — tab bar estilo iOS, botões grandes, sem zoom automático
+- 🖥️ **Responsivo** — no desktop a home vira 2 colunas
+- 🔌 **Modo demo** — sem Supabase configurado, roda em LocalStorage pra testar o layout
+- ♿ **Acessível** — navegação por teclado, `Esc` volta pra lista, leitores de tela
+
+---
+
+## 🧱 Tecnologias
+
+| Camada | O quê |
+|---|---|
+| Front | HTML + CSS + JS puro (ES modules, sem build) |
+| Banco + Auth + Realtime | [Supabase](https://supabase.com) (Postgres + RLS) |
+| Hospedagem | GitHub Pages (deploy automático a cada push na `main`) |
+
+Sem `npm install`, sem compilação: é só arquivo estático.
+
+---
+
+## 📁 Estrutura
+
+```
+├── index.html   → home (lista de jogos) + página do jogo
+├── app.js       → lógica do visitante + realtime
+├── admin.html   → login + criar/gerenciar jogos
+├── admin.js     → lógica do admin
+├── config.js    → URL + chave pública do Supabase
+├── style.css    → visual mobile-first (tema "noite no estádio")
+├── uicons.css + fonts/ → ícones locais (Flaticon UIcons)
+└── supabase/
+    └── schema.sql → tabelas (match_info, confirmations) + RLS + índices
+```
+
+---
+
+## 🚀 Setup do zero (5 min, grátis)
 
 1. Crie um projeto em https://supabase.com
 2. No **SQL Editor**, rode o arquivo `supabase/schema.sql`
 3. Em **Authentication > Users > Add user**, crie o admin (email + senha)
-4. Em **Project Settings > API**, copie `URL` + `anon key`
+4. Em **Settings > Data API**, copie a **Project URL**; em **Settings > API Keys**, a **Publishable key** (`sb_publishable_...`)
 5. Cole em `config.js`:
-```js
-window.FUTEBOL_CONFIG = {
-  SUPABASE_URL: "https://xyz.supabase.co",
-  SUPABASE_ANON_KEY: "eyJ..."
-};
+   ```js
+   window.FUTEBOL_CONFIG = {
+     SUPABASE_URL: "https://xyz.supabase.co",
+     SUPABASE_ANON_KEY: "sb_publishable_..."
+   };
+   ```
+6. Suba pra `main` — o GitHub Pages publica sozinho ✨
+
+### 💻 Rodar local
+
+```bash
+python3 -m http.server 8000
+# http://localhost:8000
 ```
-6. Hospede:
-   - **Vercel/Netlify:** arraste a pasta ou conecte o repo
-   - **Local:** `python3 -m http.server` na pasta e abra `http://localhost:8000`
 
-> Sem configurar o Supabase, o site roda em **modo demo local** (LocalStorage) para testar o layout.
+> A chave do `config.js` é **pública por design** (igual a `anon key` antiga): quem protege os dados são as políticas RLS — visitante só lê e confirma presença; só usuário logado cria/edita/remove jogos.
 
-## Arquivos
-- `index.html` + `app.js` — home + página do jogo (jogador)
-- `admin.html` + `admin.js` — página exclusiva do admin (2 passos)
-- `style.css` — visual mobile-first
-- `config.js` — chaves do Supabase
-- `supabase/schema.sql` — tabelas + RLS
+---
+
+Feito para o futebol da galera ⚽ — atualiza em tempo real.
