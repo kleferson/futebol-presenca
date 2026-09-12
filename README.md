@@ -70,22 +70,7 @@ Sem `npm install`, sem compilação: é só arquivo estático.
 
 ---
 
-## 🚀 Setup do zero (5 min, grátis)
-
-1. Crie um projeto em https://supabase.com
-2. No **SQL Editor**, rode o arquivo `supabase/schema.sql`
-3. Em **Authentication > Users > Add user**, crie o admin (email + senha)
-4. Em **Settings > Data API**, copie a **Project URL**; em **Settings > API Keys**, a **Publishable key** (`sb_publishable_...`)
-5. Cole em `config.js`:
-   ```js
-   window.FUTEBOL_CONFIG = {
-     SUPABASE_URL: "https://xyz.supabase.co",
-     SUPABASE_ANON_KEY: "sb_publishable_..."
-   };
-   ```
-6. Suba pra `main` — o GitHub Pages publica sozinho ✨
-
-### 💻 Rodar local
+## 💻 Rodar local
 
 ```bash
 python3 -m http.server 8000
